@@ -1,8 +1,8 @@
-function [TessMat, errMsg] = tess_addsquare(TessFile, SphereFile, AtlasSphereFile)
+function [TessMat, errMsg] = tess_addsquare(TessFile, SquareFile, AtlasSquareFile)
 % TESS_ADD: Add a BrainSuite registered square to an existing surface.
 %
-% USAGE:  TessMat = tess_addsphere(TessFile, SphereFile=select)
-%         TessMat = tess_addsphere(TessMat,  SphereFile=select)
+% USAGE:  TessMat = tess_addSquare(TessFile, SquareFile=select)
+%         TessMat = tess_addSquare(TessMat,  SquareFile=select)
 
 % @=============================================================================
 % This function is part of the Brainstorm software:
@@ -28,29 +28,29 @@ function [TessMat, errMsg] = tess_addsquare(TessFile, SphereFile, AtlasSphereFil
 TessMat = [];
 errMsg = [];
 
-% Ask for sphere file
-if (nargin < 3) || isempty(SphereFile) || isempty(AtlasSphereFile)
+% Ask for Square file
+if (nargin < 3) || isempty(SquareFile) || isempty(AtlasSquareFile)
     % Get last used directories and formats
     LastUsedDirs = bst_get('LastUsedDirs');
     % Get Surface files
-    SphereFile = java_getfile( 'open', ...
+    SquareFile = java_getfile( 'open', ...
        'Import atlas surfaces...', ...      % Window title
        LastUsedDirs.ImportAnat, ...   % Default directory
        'single', 'files', ...         % Selection mode
-       {{'.dfs'}, 'Registered SVReg sphere (*.dfs)', 'BrainSuite'}, 'BrainSuite');
+       {{'.dfs'}, 'Registered SVReg Square (*.dfs)', 'BrainSuite'}, 'BrainSuite');
     % If no file was selected: exit
-    if isempty(AtlasSphereFile)
+    if isempty(AtlasSquareFile)
         return
     end
     % Save default import directory
-    LastUsedDirs.ImportAnat = bst_fileparts(AtlasSphereFile);
+    LastUsedDirs.ImportAnat = bst_fileparts(AtlasSquareFile);
     bst_set('LastUsedDirs', LastUsedDirs);
 end
 
 % Progress bar
 isProgressBar = ~bst_progress('isVisible');
 if isProgressBar
-    bst_progress('start', 'Load registration', 'Loading BrainSuite sphere...');
+    bst_progress('start', 'Load registration', 'Loading BrainSuite Square...');
 end
 
 % Get the subject MRI
@@ -70,23 +70,23 @@ else
     TessMat = in_tess_bst(TessFile);
 end
 
-% Load the sphere surface: DO NOT CONVERT TO SCS!!!!
-%SphereMat = in_tess(SphereFile, 'FS', sMri);
+% Load the Square surface: DO NOT CONVERT TO SCS!!!!
+%SquareMat = in_tess(SquareFile, 'FS', sMri);
 % Load the surface, keep in the original coordinate system
-surfSqr = readdfs(SphereFile);
-atlasSqr= readdfs(AtlasSphereFile);
+surfSqr = readdfs(SquareFile);
+atlasSqr= readdfs(AtlasSquareFile);
 
-SphereVertices=[surfSqr.u',surfSqr.v'];
-AtlasSphereVertices=[atlasSqr.u',atlasSqr.v'];
+SquareVertices=[surfSqr.u',surfSqr.v'];
+AtlasSquareVertices=[atlasSqr.u',atlasSqr.v'];
 % Check that the number of vertices match
-if (length(SphereVertices) ~= length(TessMat.Vertices))
-    errMsg = sprintf('The number of vertices in the surface (%d) and the sphere (%d) do not match.', length(TessMat.Vertices), length(SphereMat.Vertices));
+if (length(SquareVertices) ~= length(TessMat.Vertices))
+    errMsg = sprintf('The number of vertices in the surface (%d) and the Square (%d) do not match.', length(TessMat.Vertices), length(SquareMat.Vertices));
     TessMat = [];
     return;
 end
-% Add the sphere vertex information to the surface matrix
-TessMat.Reg.Sphere.Vertices = SphereVertices;
-TessMat.Reg.AtlasSphere.Vertices = AtlasSphereVertices;
+% Add the Square vertex information to the surface matrix
+TessMat.Reg.Square.Vertices = SquareVertices;
+TessMat.Reg.AtlasSquare.Vertices = AtlasSquareVertices;
 % Save modifications to input file
 bst_save(file_fullpath(TessFile), TessMat, 'v7');
 

@@ -45,6 +45,7 @@ panel_scout('SaveModifications');
 % Initialize new structure
 NewTess = db_template('surfacemat');
 NewTess.Reg.Sphere.Vertices = [];
+NewTess.Reg.Square.Vertices = [];
 
 isLeft = 0;
 isRight = 0;
@@ -159,17 +160,25 @@ for iFile = 1:length(TessFiles)
         end
     end
     
-    % Concatenate FreeSurfer or BrainSuite registration spheres
+    % Concatenate FreeSurfer registration spheres
     if isfield(oldTess, 'Reg') && isfield(oldTess.Reg, 'Sphere') && isfield(oldTess.Reg.Sphere, 'Vertices') && ~isempty(oldTess.Reg.Sphere.Vertices)
         NewTess.Reg.Sphere.Vertices = [NewTess.Reg.Sphere.Vertices; oldTess.Reg.Sphere.Vertices];
-        if isfield(oldTess.Reg, 'AtlasSphere') % For BrainSuite compatibility
-            if isfield(NewTess.Reg, 'AtlasSphere')
-                NewTess.Reg.AtlasSphere.Vertices = [NewTess.Reg.AtlasSphere.Vertices; oldTess.Reg.AtlasSphere.Vertices];
+    end
+ 
+    % Concatenate BrainSuite registration spheres    
+    if isfield(oldTess, 'Reg') && isfield(oldTess.Reg, 'Square') && isfield(oldTess.Reg.Square, 'Vertices') && ~isempty(oldTess.Reg.Square.Vertices)
+        NewTess.Reg.Square.Vertices = [NewTess.Reg.Square.Vertices; oldTess.Reg.Square.Vertices];
+        if isfield(oldTess.Reg, 'AtlasSquare') % For BrainSuite compatibility
+            if isfield(NewTess.Reg, 'AtlasSquare')
+                NewTess.Reg.AtlasSquare.Vertices = [NewTess.Reg.AtlasSquare.Vertices; oldTess.Reg.AtlasSquare.Vertices];
             else
-                NewTess.Reg.AtlasSphere.Vertices=oldTess.Reg.AtlasSphere.Vertices;
+                NewTess.Reg.AtlasSquare.Vertices=oldTess.Reg.AtlasSquare.Vertices;
             end
         end
     end
+
+    
+    
 end
 % Sort scouts by name
 for iAtlas = 1:length(NewTess.Atlas)
