@@ -40,16 +40,16 @@ if (nargin < 2) || (nargin > 4)
     error('Usage: Wmat = bst_shepards(destLoc, srcLoc, nbNeighbors, excludeParam)');
 end
 
-% Check matrices orientation 2D case
-if (size(destLoc, 2) == 2) || (size(srcLoc, 2) == 2)
-    destLoc=[destLoc,ones(size(destLoc,1),1)]; srcLoc=[srcLoc,ones(size(srcLoc,1),1)];    
-    %error('destLoc and srcLoc must have 3 columns (X,Y,Z).');
-end
+% % Check matrices orientation 2D case
+% if (size(destLoc, 2) == 2) || (size(srcLoc, 2) == 2)
+%     destLoc=[destLoc,ones(size(destLoc,1),1)]; srcLoc=[srcLoc,ones(size(srcLoc,1),1)];    
+%     %error('destLoc and srcLoc must have 3 columns (X,Y,Z).');
+% end
 
 % Check matrices orientation
-if (size(destLoc, 2) ~= 3) || (size(srcLoc, 2) ~= 3)
-    destLoc=[destLoc,ones(size(destLoc,1),1)]; srcLoc=[srcLoc,ones(size(srcLoc,1),1)];    
-    %error('destLoc and srcLoc must have 3 columns (X,Y,Z).');
+if ((size(destLoc, 2) ~= 3) || (size(srcLoc, 2) ~= 3)) && ((size(destLoc, 2) ~= 2) || (size(srcLoc, 2) ~= 2))
+%    destLoc=[destLoc,ones(size(destLoc,1),1)]; srcLoc=[srcLoc,ones(size(srcLoc,1),1)];    
+    error('destLoc and srcLoc must have 2 or 3 columns (X,Y,Z).');
 end
 % Argument: Number of neighbors for interpolation
 if (nargin < 3) || isempty(nbNeighbors)
