@@ -55,7 +55,7 @@ end
 ProtocolName = 'TutorialRawBST';
 % Start brainstorm without the GUI
 if ~brainstorm_dev('status')
-    brainstorm_dev nogui
+    brainstorm_dev %nogui
 end
 % Delete existing protocol
 gui_brainstorm('DeleteProtocol', ProtocolName);

@@ -505,6 +505,7 @@ if isfield(TessMat, 'Reg') && isfield(TessMat.Reg, 'Square') && isfield(TessMat.
     else
         NewTessMat.Reg.Square = [];
     end
+    NewTessMat.Reg.AtlasSquare=TessMat.Reg.AtlasSquare;
 end
 
 
