@@ -19,7 +19,7 @@ function [Wmat, sSrcSubj, sDestSubj, srcSurfMat, destSurfMat, isStopWarped] = te
 % For more information type "brainstorm license" at command prompt.
 % =============================================================================@
 %
-% Authors: Francois Tadel, 2010-2015
+% Authors: Francois Tadel, Anand Joshi in 2015
 
 % Parse inputs
 if (nargin < 4) || isempty(isStopWarped)
@@ -122,7 +122,7 @@ end
 if isempty(Wmat) && isfield(srcSurfMat, 'Reg') && isfield(srcSurfMat.Reg, 'Square') && isfield(srcSurfMat.Reg.Square, 'Vertices') && ~isempty(srcSurfMat.Reg.Square.Vertices) && ...
    isfield(destSurfMat, 'Reg') && isfield(destSurfMat.Reg, 'Square') && isfield(destSurfMat.Reg.Square, 'Vertices') && ~isempty(destSurfMat.Reg.Square.Vertices)
     % Evaluate number of vertices to use
-    nbNeighbors = 8;
+    nbNeighbors = 4;
     % Allocate interpolation matrix
     Wmat = spalloc(nDest, nSrc, nbNeighbors * nDest);
     % Split hemispheres
@@ -130,20 +130,31 @@ if isempty(Wmat) && isfield(srcSurfMat, 'Reg') && isfield(srcSurfMat.Reg, 'Squar
     [rHdest,lHdest, isConnected(2)] = tess_hemisplit(destSurfMat);
     % Get vertices
     srcVert  = double(srcSurfMat.Reg.Square.Vertices);
+    srcAtlasVert  = double(srcSurfMat.Reg.AtlasSquare.Vertices);
     destVert = double(destSurfMat.Reg.Square.Vertices);
+    destAtlasVert = double(destSurfMat.Reg.AtlasSquare.Vertices);
+
     % If hemispheres are connected: process all at once
     if any(isConnected)
+        
         rHsrc  = 1:nSrc;
         rHdest = 1:nDest;
         lHsrc  = [];
         lHdest = [];
     end
-    % Re-interpolate using the sphere and the shepards algorithm
-    WmatTmp = bst_shepards(destVert(rHdest,:), srcVert(rHsrc,:), nbNeighbors, 0);
+    % Re-interpolate using the Squares and the shepards algorithm. First
+    % find interpolation between subject and BrainSuiteAtlas1 and then find
+    % interpolation matrix between BrainSuiteAtlas1 to Default Anatomy in
+    % BrainStorm
+    WmatTmpSrc2Atlas = bst_shepards(srcAtlasVert, srcVert(rHsrc,:), nbNeighbors, 0);
+    WmatTmpAtlas2Dest = bst_shepards(destVert(rHdest,:), destAtlasVert, nbNeighbors, 0);
+    WmatTmp=WmatTmpAtlas2Dest*WmatTmpSrc2Atlas;
     Wmat(rHdest,rHsrc) = WmatTmp;
     if ~isempty(lHdest)
-        WmatTmp = bst_shepards(destVert(lHdest,:), srcVert(lHsrc,:), nbNeighbors, 0);
-        Wmat(lHdest,lHsrc) = WmatTmp;
+    WmatTmpSrc2Atlas = bst_shepards(srcAtlasVert, srcVert(lHsrc,:), nbNeighbors, 0);
+    WmatTmpAtlas2Dest = bst_shepards(destVert(lHdest,:), destAtlasVert, nbNeighbors, 0);
+    WmatTmp=WmatTmpAtlas2Dest*WmatTmpSrc2Atlas;
+    Wmat(lHdest,lHsrc) = WmatTmp;
     end
 end
 

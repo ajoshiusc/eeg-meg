@@ -75,7 +75,14 @@ end
 % Load the surface, keep in the original coordinate system
 surfSqr = readdfs(SquareFile);
 atlasSqr= readdfs(AtlasSquareFile);
-
+if strfind(AtlasSquareFile,'atlas.left.mid.cortex.svreg.dfs');
+    %%Left Hemisphere is being loaded Multiply the U coordinates by -1 for
+    %%easy computation to distinguish between left and right hemispheres
+    surfSqr.u=-1*surfSqr.u;
+%    surfSqr.v=-1*surfSqr.v;
+    atlasSqr.u=-1*atlasSqr.u;
+%    atlasSqr.v=-1*atlasSqr.v;
+end
 SquareVertices=[surfSqr.u',surfSqr.v'];
 AtlasSquareVertices=[atlasSqr.u',atlasSqr.v'];
 % Check that the number of vertices match
