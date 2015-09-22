@@ -4,12 +4,12 @@ function [Wmat, sSrcSubj, sDestSubj, srcSurfMat, destSurfMat, isStopWarped] = te
 % @=============================================================================
 % This function is part of the Brainstorm software:
 % http://neuroimage.usc.edu/brainstorm
-% 
+%
 % Copyright (c)2000-2015 University of Southern California & McGill University
 % This software is distributed under the terms of the GNU General Public License
 % as published by the Free Software Foundation. Further details on the GPL
 % license can be found at http://www.gnu.org/copyleft/gpl.html.
-% 
+%
 % FOR RESEARCH PURPOSES ONLY. THE SOFTWARE IS PROVIDED "AS IS," AND THE
 % UNIVERSITY OF SOUTHERN CALIFORNIA AND ITS COLLABORATORS DO NOT MAKE ANY
 % WARRANTY, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF
@@ -66,8 +66,8 @@ end
 if isempty(Wmat) && ~isempty(strfind(srcSurfFile, '_warped')) && ~isSrcDefaultSubj && isDestDefaultSubj && (nSrc == nDest)
     % Warning message
     warnMsg = ['The source files were computed on a warped anatomy, there is' 10 ...
-               'no need to re-project them on the default anatomy, you can directly' 10 ...
-               'calculate average or differences across subjects.'];
+        'no need to re-project them on the default anatomy, you can directly' 10 ...
+        'calculate average or differences across subjects.'];
     % Ask user to cancel the process
     if isempty(isStopWarped)
         if isInteractive
@@ -90,7 +90,7 @@ end
 % ===== USE FREESURFER SPHERES =====
 % If the registered spheres are available in both surfaces
 if isempty(Wmat) && isfield(srcSurfMat, 'Reg') && isfield(srcSurfMat.Reg, 'Sphere') && isfield(srcSurfMat.Reg.Sphere, 'Vertices') && ~isempty(srcSurfMat.Reg.Sphere.Vertices) && ...
-   isfield(destSurfMat, 'Reg') && isfield(destSurfMat.Reg, 'Sphere') && isfield(destSurfMat.Reg.Sphere, 'Vertices') && ~isempty(destSurfMat.Reg.Sphere.Vertices)
+        isfield(destSurfMat, 'Reg') && isfield(destSurfMat.Reg, 'Sphere') && isfield(destSurfMat.Reg.Sphere, 'Vertices') && ~isempty(destSurfMat.Reg.Sphere.Vertices)
     % Evaluate number of vertices to use
     nbNeighbors = 8;
     % Allocate interpolation matrix
@@ -120,7 +120,7 @@ end
 % ===== USE BrainSuite Squares =====
 % If the registered squares are available in both surfaces
 if isempty(Wmat) && isfield(srcSurfMat, 'Reg') && isfield(srcSurfMat.Reg, 'Square') && isfield(srcSurfMat.Reg.Square, 'Vertices') && ~isempty(srcSurfMat.Reg.Square.Vertices) && ...
-   isfield(destSurfMat, 'Reg') && isfield(destSurfMat.Reg, 'Square') && isfield(destSurfMat.Reg.Square, 'Vertices') && ~isempty(destSurfMat.Reg.Square.Vertices)
+        isfield(destSurfMat, 'Reg') && isfield(destSurfMat.Reg, 'Square') && isfield(destSurfMat.Reg.Square, 'Vertices') && ~isempty(destSurfMat.Reg.Square.Vertices)
     % Evaluate number of vertices to use
     nbNeighbors = 4;
     % Allocate interpolation matrix
@@ -133,7 +133,9 @@ if isempty(Wmat) && isfield(srcSurfMat, 'Reg') && isfield(srcSurfMat.Reg, 'Squar
     srcAtlasVert  = double(srcSurfMat.Reg.AtlasSquare.Vertices);
     destVert = double(destSurfMat.Reg.Square.Vertices);
     destAtlasVert = double(destSurfMat.Reg.AtlasSquare.Vertices);
-
+    
+    AtlLInd=find(srcAtlasVert(:,1)<0);
+    AtlRInd=find(srcAtlasVert(:,1)>=0);
     % If hemispheres are connected: process all at once
     if any(isConnected)
         
@@ -146,15 +148,15 @@ if isempty(Wmat) && isfield(srcSurfMat, 'Reg') && isfield(srcSurfMat.Reg, 'Squar
     % find interpolation between subject and BrainSuiteAtlas1 and then find
     % interpolation matrix between BrainSuiteAtlas1 to Default Anatomy in
     % BrainStorm
-    WmatTmpSrc2Atlas = bst_shepards(srcAtlasVert, srcVert(rHsrc,:), nbNeighbors, 0);
-    WmatTmpAtlas2Dest = bst_shepards(destVert(rHdest,:), destAtlasVert, nbNeighbors, 0);
+    WmatTmpSrc2Atlas = bst_shepards(srcAtlasVert(AtlRInd,:), srcVert(rHsrc,:), nbNeighbors, 0);
+    WmatTmpAtlas2Dest = bst_shepards(destVert(rHdest,:), destAtlasVert(AtlRInd,:), nbNeighbors, 0);
     WmatTmp=WmatTmpAtlas2Dest*WmatTmpSrc2Atlas;
     Wmat(rHdest,rHsrc) = WmatTmp;
     if ~isempty(lHdest)
-    WmatTmpSrc2Atlas = bst_shepards(srcAtlasVert, srcVert(lHsrc,:), nbNeighbors, 0);
-    WmatTmpAtlas2Dest = bst_shepards(destVert(lHdest,:), destAtlasVert, nbNeighbors, 0);
-    WmatTmp=WmatTmpAtlas2Dest*WmatTmpSrc2Atlas;
-    Wmat(lHdest,lHsrc) = WmatTmp;
+        WmatTmpSrc2Atlas = bst_shepards(srcAtlasVert(AtlLInd,:), srcVert(lHsrc,:), nbNeighbors, 0);
+        WmatTmpAtlas2Dest = bst_shepards(destVert(lHdest,:), destAtlasVert(AtlLInd,:), nbNeighbors, 0);
+        WmatTmp=WmatTmpAtlas2Dest*WmatTmpSrc2Atlas;
+        Wmat(lHdest,lHsrc) = WmatTmp;
     end
 end
 
@@ -166,12 +168,12 @@ if isempty(Wmat)
     bst_memory('UnloadAll', 'Forced');
     % Warning: bad technique
     java_dialog('warning', ['This projection method you are about is outdated and inaccurate.' 10 10 ...
-                            'For accurate results, please consider using FreeSurfer for the MRI' 10 ...
-                            'segmentation, because it also generates registered spheres that we' 10 ...
-                            'can in Brainstorm for the the inter-subject co-registration.' 10 10 ...
-                            'More information in the FreeSurfer tutorial on the Brainstorm website: ' 10 ...
-                            'http://neuroimage.usc.edu/brainstorm/Tutorials/LabelFreeSurfer']);
-
+        'For accurate results, please consider using FreeSurfer for the MRI' 10 ...
+        'segmentation, because it also generates registered spheres that we' 10 ...
+        'can in Brainstorm for the the inter-subject co-registration.' 10 10 ...
+        'More information in the FreeSurfer tutorial on the Brainstorm website: ' 10 ...
+        'http://neuroimage.usc.edu/brainstorm/Tutorials/LabelFreeSurfer']);
+    
     % === GET FIDUCIALS ===
     % Fiducials 3D positions are saved in the subject's MRI structure
     if ~isempty(sSrcSubj.Anatomy) && ~isempty(sDestSubj.Anatomy)
@@ -183,15 +185,15 @@ if isempty(Wmat)
         destMri = load(destMriFile, 'NCS', 'SCS');
         % Check NCS and SCS fields
         isMissingSrc = ~isfield(srcMri,  'NCS') || ~all(isfield(srcMri.NCS,  {'AC','PC','IH'}))    || isempty(srcMri.NCS.AC)   || isempty(srcMri.NCS.PC)  || isempty(srcMri.NCS.IH) || ...
-                       ~isfield(srcMri,  'SCS') || ~all(isfield(srcMri.SCS,  {'NAS','LPA','RPA'})) || isempty(srcMri.SCS.NAS)  || isempty(srcMri.SCS.LPA) || isempty(srcMri.SCS.RPA);
+            ~isfield(srcMri,  'SCS') || ~all(isfield(srcMri.SCS,  {'NAS','LPA','RPA'})) || isempty(srcMri.SCS.NAS)  || isempty(srcMri.SCS.LPA) || isempty(srcMri.SCS.RPA);
         isMissingDest = ~isfield(destMri,  'NCS') || ~all(isfield(destMri.NCS,  {'AC','PC','IH'}))    || isempty(destMri.NCS.AC)   || isempty(destMri.NCS.PC)  || isempty(destMri.NCS.IH) || ...
-                        ~isfield(destMri,  'SCS') || ~all(isfield(destMri.SCS,  {'NAS','LPA','RPA'})) || isempty(destMri.SCS.NAS)  || isempty(destMri.SCS.LPA) || isempty(destMri.SCS.RPA);
+            ~isfield(destMri,  'SCS') || ~all(isfield(destMri.SCS,  {'NAS','LPA','RPA'})) || isempty(destMri.SCS.NAS)  || isempty(destMri.SCS.LPA) || isempty(destMri.SCS.RPA);
         % If missing SOURCE fiducials
         if isMissingSrc && ~file_compare(srcMriFile, destMriFile)
             if isInteractive
-                isStop = java_dialog('confirm', ['Warning: some fiducial points have not been marked on the source MRI.' 10 ... 
-                                                 'Without those fiducials, the projection will be much less accurate.' 10 10 ...
-                                                 'Start MRI Viewer and define those points now ?'], 'Project sources');
+                isStop = java_dialog('confirm', ['Warning: some fiducial points have not been marked on the source MRI.' 10 ...
+                    'Without those fiducials, the projection will be much less accurate.' 10 10 ...
+                    'Start MRI Viewer and define those points now ?'], 'Project sources');
                 % Stop and start MRI Viewer
                 if isStop
                     view_mri(srcMriFile, 'EditFiducials');
@@ -205,9 +207,9 @@ if isempty(Wmat)
         % If missing DESTINATION fiducials
         if isMissingDest && ~file_compare(srcMriFile, destMriFile)
             if isInteractive
-                isStop = java_dialog('confirm', ['Warning: some fiducial points have not been marked on the destination MRI.' 10 ... 
-                                                 'Without those fiducials, the projection will be much less accurate.' 10 10 ...
-                                                 'Start MRI Viewer and define those points now ?'], 'Project sources');
+                isStop = java_dialog('confirm', ['Warning: some fiducial points have not been marked on the destination MRI.' 10 ...
+                    'Without those fiducials, the projection will be much less accurate.' 10 10 ...
+                    'Start MRI Viewer and define those points now ?'], 'Project sources');
                 % Stop and start MRI Viewer
                 if isStop
                     view_mri(destMriFile, 'EditFiducials');
@@ -234,7 +236,7 @@ if isempty(Wmat)
         end
         return
     end
-
+    
     % === COMPUTE INTERPOLATION ===
     if isInteractive
         bst_progress('start', 'Project sources', 'Computing transformation...');
