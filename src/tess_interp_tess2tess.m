@@ -122,7 +122,7 @@ end
 if isempty(Wmat) && isfield(srcSurfMat, 'Reg') && isfield(srcSurfMat.Reg, 'Square') && isfield(srcSurfMat.Reg.Square, 'Vertices') && ~isempty(srcSurfMat.Reg.Square.Vertices) && ...
         isfield(destSurfMat, 'Reg') && isfield(destSurfMat.Reg, 'Square') && isfield(destSurfMat.Reg.Square, 'Vertices') && ~isempty(destSurfMat.Reg.Square.Vertices)
     % Evaluate number of vertices to use
-    nbNeighbors = 4;
+    nbNeighbors = 8;
     % Allocate interpolation matrix
     Wmat = spalloc(nDest, nSrc, nbNeighbors * nDest);
     % Split hemispheres

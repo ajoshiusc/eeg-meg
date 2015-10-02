@@ -1,10 +1,14 @@
 function [I, dist, dt] = bst_nearest(refVert, testVert, K, isProgress, dt)
 % BST_NEAREST: K-Nearest neighbor search
+% In this implementation, for each of the test vertices, we first find closest point 
+% in the reference vertices. Then, a patch is expanded in the reference
+% vertices till there are minimum 3K times vertices in the patch. On an average, 
+% this patch contains 20K times vertices. The K nearest neighbors are found in this patch.
 %
 % USAGE:  I = bst_nearest(refVert, testVert, K=1, isProgress=1, dt=[])
 %
-% INPUT: 
-%    - refVert    : [Nx3] list of reference 3D points 
+% INPUT:
+%    - refVert    : [Nx3] list of reference 3D points
 %    - testVert   : [Mx3] list of 3D points for which we want the nearest vertex in refVert
 %    - K          : Number of nearest neighbors we want, default=1
 %    - isProgress : If 1, show a progress bar
@@ -16,12 +20,12 @@ function [I, dist, dt] = bst_nearest(refVert, testVert, K, isProgress, dt)
 % @=============================================================================
 % This function is part of the Brainstorm software:
 % http://neuroimage.usc.edu/brainstorm
-% 
+%
 % Copyright (c)2000-2015 University of Southern California & McGill University
 % This software is distributed under the terms of the GNU General Public License
 % as published by the Free Software Foundation. Further details on the GPL
 % license can be found at http://www.gnu.org/copyleft/gpl.html.
-% 
+%
 % FOR RESEARCH PURPOSES ONLY. THE SOFTWARE IS PROVIDED "AS IS," AND THE
 % UNIVERSITY OF SOUTHERN CALIFORNIA AND ITS COLLABORATORS DO NOT MAKE ANY
 % WARRANTY, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF
@@ -31,7 +35,7 @@ function [I, dist, dt] = bst_nearest(refVert, testVert, K, isProgress, dt)
 % For more information type "brainstorm license" at command prompt.
 % =============================================================================@
 %
-% Authors: Francois Tadel, 2013
+% Authors: Anand A. Joshi 2015
 
 % Parse inputs
 if (nargin < 5) || isempty(dt)
@@ -43,12 +47,7 @@ end
 if (nargin < 3) || isempty(K)
     K = 1;
 end
-% Do we want the distance?
-isDist = (nargout >= 2);
-% Do we use the parallel processing toolbox
-% isParallel = (exist('matlabpool', 'file') ~= 0);
-isParallel = 0;
-% Open progress bar
+
 if isProgress
     isPreviousBar = bst_progress('isVisible');
     if isPreviousBar
@@ -59,141 +58,82 @@ if isProgress
     end
 end
 
-% ===== K>1 =====
-if (K > 1)
-    % Intialize matrices
-    nTest = size(testVert,1);
-    I = zeros(nTest, K);
-    dist = I;
-    % ===== METHOD 1: FULL LOOP =====
-    % Faster for up to 50000 vertices
-    if ~isParallel || (nTest < 60000)
-        if isProgress
-            bst_progress('start', 'Nearest neighbor', 'Nearest neighbor search...', 1, 100);
-        end
-        pos = 1;
-        % Full for loop on the vertices for which we want the nearest neighbor in the reference list
-        for i = 1:nTest
-            % Progress bar
-            if isProgress && (i/nTest*100 > pos)
-                pos = ceil(i/nTest*100);
-                bst_progress('set', pos);
-            end
-            % added code for BrainSuite Compatibility
-            if size(refVert,2)==2 && size(testVert,2)==2
-            % Compute distance   
-                d = (refVert(:,1)-testVert(i,1)).^2 + (refVert(:,2)-testVert(i,2)).^2; 
-            else
-            % Calculate distance
-               d = (refVert(:,1)-testVert(i,1)) .^ 2 + (refVert(:,2)-testVert(i,2)) .^ 2 + (refVert(:,3)-testVert(i,3)) .^ 2;
-            end
-            [s,t] = sort(d);
-            I(i,:) = t(1:K);
-            dist(i,:) = s(1:K);
-        end
-        if isProgress && isPreviousBar
-            bst_progress('set', initPos);
-        end
-    % ===== METHOD 2: FULL PARFOR LOOP =====
-    % Faster for more than 30000 vertices
-    else
-        % Start parallel pool
-        if (bst_get('MatlabVersion') >= 802)
-            hPool = parpool;
-        else
-            matlabpool open;
-        end
-        % Parallel loop
-        parfor i = 1:nTest
+if isProgress
+    bst_progress('start', 'Nearest neighbor', 'Nearest neighbor search...', 1, 100);
+end
+ 
 
-            if size(refVert,2)==2 && size(testVert,2)==2
-            % Compute distance for BrainSuite
-                d = (refVert(:,1)-testVert(i,1)).^2 + (refVert(:,2)-testVert(i,2)).^2; 
-            else
-            % Calculate distance for FreeSurfer
-               d = (refVert(:,1)-testVert(i,1)) .^ 2 + (refVert(:,2)-testVert(i,2)) .^ 2 + (refVert(:,3)-testVert(i,3)) .^ 2;
-            end
+Pts=[refVert;testVert];Pts=Pts+1000*eps*rand(size(Pts));
+Ptsref=[refVert];Ptsref=Ptsref+1000*eps*rand(size(Ptsref));
 
-            [s,t] = sort(d);
-            I(i,:) = t(1:K);
-            dist(i,:) = s(1:K);
-        end
-        % Close pool
-        if (bst_get('MatlabVersion') >= 802)
-            delete(hPool);
-        else
-            matlabpool close;
-        end
+fullt = delaunayTriangulation(Pts);
+reft = delaunayTriangulation(Ptsref);
+
+ed=fullt.edges;
+Adj=sparse(ed(:,1),ed(:,2),1,length(fullt.Points),length(fullt.Points));
+Adj=Adj+Adj';
+
+ed=reft.edges;
+Adjref=sparse(ed(:,1),ed(:,2),1,length(reft.Points),length(reft.Points));
+Adjref=Adjref+Adjref';
+
+Adjref2=0*Adj;
+Adjref2(1:length(refVert),1:length(refVert))=Adjref+speye(size(Adjref));
+
+AdjN=Adj(1:length(refVert),length(refVert)+1:end);
+nbrs=full(sum(AdjN,1));Adj1=Adj+speye(size(Adj));
+while min(nbrs)<3
+    Adj=Adj1*Adj;Adj=(Adj>0);
+    AdjN=Adj(1:length(refVert),length(refVert)+1:end);
+    nbrs=full(sum(AdjN,1));
+end
+AdjN=Adj(1:length(refVert),length(refVert)+1:end);
+nbrs=sum(AdjN,1);
+iter=0;
+while min(nbrs)<3*K
+    Adj=Adjref2*Adj;Adj=(Adj>0);
+    AdjN=Adj(1:length(refVert),length(refVert)+1:end);
+    nbrs=sum(AdjN,1);%min(nbrs);
+    iter=iter+1;
+    if isProgress 
+        pos = iter;
+        bst_progress('set', pos);
     end
     
-%     % ===== METHOD 3: BY BLOCKS =====
-%     % Slower in all cases
-%     blockSize = 100;
-%     nBlocks = ceil(nTest / blockSize);
-%     for iBlock = 1:nBlocks
-%         iVert = ((iBlock-1)*blockSize+1) : min(iBlock*blockSize, nTest);
-%         d = bst_bsxfun(@minus, testVert(iVert,1), ones(length(iVert),1) * refVert(:,1)') .^ 2 + ...
-%             bst_bsxfun(@minus, testVert(iVert,2), ones(length(iVert),1) * refVert(:,2)') .^ 2 + ...
-%             bst_bsxfun(@minus, testVert(iVert,3), ones(length(iVert),1) * refVert(:,3)') .^ 2;
-%         [s,t] = sort(d,2);
-%         I(iVert,:) = t(:,1:K);
-%         dist(iVert,:) = s(:,1:K);
-%     end
+end
+Adj=AdjN;
+[r,c]=find(Adj);
+Xref=0*Adj;
+Ytst=0*Adj;
+
+Xref=sparse(r,c,refVert(r,1),size(Xref,1),size(Xref,2));
+Yref=sparse(r,c,refVert(r,2),size(Xref,1),size(Xref,2));
+
+Xtst=sparse(r,c,testVert(c,1),size(Xref,1),size(Xref,2));
+Ytst=sparse(r,c,testVert(c,2),size(Xref,1),size(Xref,2));
+
+D2=(Xref-Xtst).^2 + (Yref-Ytst).^2;
+
+D2inv=spfun(@(x)(1./x),D2);
+%[B,I]=sort(D2inv,2);
+I=zeros(size(testVert,1),K);dist=I;
+nTest=size(D2inv,2);
+pos=20;
+for jj=1:nTest
     
-    % The loop calculates the square of the distance: fix
-    if isDist
-        dist = sqrt(dist);
+    if isProgress && (jj/(nTest)*100 > pos)
+        pos = ceil(jj/nTest*100);
+        bst_progress('set', pos);
     end
-    dt = [];
     
-% ===== K=1 =====
-else
-    % Get the nearest neighbors
-    if exist('delaunayTriangulation', 'file')
-        if isempty(dt)
-            dt = delaunayTriangulation(refVert);
-        end
-        if isDist
-            [I,dist] = dt.nearestNeighbor(testVert);
-        else
-            I = dt.nearestNeighbor(testVert);
-        end
-    elseif exist('DelaunayTri', 'file')
-        if isempty(dt)
-            dt = DelaunayTri(refVert);
-        end
-        if ismethod(dt, 'nearestNeighbor')
-            if isDist
-                try
-                    [I,dist] = dt.nearestNeighbor(testVert);
-                catch
-                    I = dt.nearestNeighbor(testVert);
-                    dist = sqrt(sum((testVert - refVert(I,:)).^2,2));
-                end
-            else
-                I = dt.nearestNeighbor(testVert);
-            end
-        else
-            if isDist
-                [I,dist] = dsearchn(refVert, dt.Triangulation, testVert);
-            else
-                I = dsearchn(refVert, dt.Triangulation, testVert);
-            end
-        end
-    % For older versions of Matlab that do not have DelaunayTri
-    else
-        if isempty(dt)
-            dt = delaunayn(refVert);
-        end
-        if isDist
-            [I,dist] = dsearchn(refVert, dt, testVert);
-        else
-            I = dsearchn(refVert, dt, testVert);
-        end
-    end
+    [dd,ii]=sort(D2inv(:,jj));
+    I(jj,:)=ii(end-K+1:end);
+    dist(jj,:)=sqrt(1./dd(end-K+1:end));
 end
 
 % Close progress bar
 if isProgress && ~isPreviousBar
     bst_progress('stop');
 end
+
+
