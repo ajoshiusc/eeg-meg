@@ -1,0 +1,782 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Implicit surface EEG and MEG Start Point 2
+\end_layout
+
+\begin_layout Standard
+Following the notes by Dr.
+ Fokas and, lets consider infinite homogeneous conductor with constant coductivi
+ty 
+\begin_inset Formula $\sigma$
+\end_inset
+
+.
+ We will consider a case where current has support on a compact closed surface.
+ We know that 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula 
+\[
+V(r)=\frac{1}{4\pi\sigma}\int\frac{J(r')(r-r')}{|r-r'|^{3}}dV
+\]
+
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+Let us consider the surface in 3D represented as a zero level set of a level
+ set function 
+\begin_inset Formula $\Psi$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathcal{M}=\{x:\Psi(x)=0\}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+More generally: given a compact smooth surface 
+\begin_inset Formula $\mathcal{M}\subset R^{3}$
+\end_inset
+
+, there exists a radius 
+\begin_inset Formula $r>0$
+\end_inset
+
+ such that on the set 
+\begin_inset Formula $M=\{x∈R^{3}:dist(x,\mbox{\mathcal{M}})<r\}$
+\end_inset
+
+ we can solve the Eikonal equation 
+\begin_inset Formula $|\nabla\Psi|=1$
+\end_inset
+
+ to get a function 
+\begin_inset Formula $\Psi:M\rightarrow R$
+\end_inset
+
+ such that 
+\begin_inset Formula $\mathcal{M}=\Psi^{-1}(0)$
+\end_inset
+
+ and 
+\begin_inset Formula $\nabla\Psi$
+\end_inset
+
+ is the unit normal vector field for any level set 
+\begin_inset Formula $\Psi^{-1}(c)$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sethian1,chen1"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename level_set_representation_of_surface.png
+	lyxscale 10
+	width 40text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Level set representation of surface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To each point 
+\begin_inset Formula $x$
+\end_inset
+
+ in the narrow band 
+\begin_inset Formula $M$
+\end_inset
+
+, we can associate a point on the surface 
+\begin_inset Formula $s(x)\in\mathcal{M}$
+\end_inset
+
+ by following characteristic lines of 
+\begin_inset Formula $\Psi$
+\end_inset
+
+.
+ The current in the narrow band is 
+\begin_inset Formula $\vec{J}(x)$
+\end_inset
+
+ can be decomposed into tangential component 
+\begin_inset Formula $\vec{J_{\mathcal{M}}}(s(x))$
+\end_inset
+
+ and the normal component 
+\begin_inset Formula $J_{n}\frac{\nabla\Psi}{|\nabla\Psi|}=J_{n}\vec{n}$
+\end_inset
+
+, where 
+\begin_inset Formula $\vec{n}$
+\end_inset
+
+ is the surface normal.
+\end_layout
+
+\begin_layout Standard
+Let the current be defined as: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\vec{J}(x)=\vec{J}(s(x))=\vec{J_{\mathcal{M}}}(s(x))+J_{n}(s(x))\vec{n}(s(x))
+\]
+
+\end_inset
+
+ Therefore, the divergence of the current can be expressed as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\nabla\cdot\vec{J}(x)=\nabla\cdot\vec{J}_{\mathcal{M}}(s(x))+\nabla\cdot J_{n}(s(x))\vec{n}(s(x))\label{eq:div_current}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\nabla\cdot J_{n}(s(x))\vec{n}(s(x))=(\nabla J_{n}\cdot\vec{n(s)}+J_{n}(s)\nabla\cdot\vec{n(s)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Using the identities,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\nabla\cdot\vec{n}(s) & = & -2*\text{mean curvature}=\boxed{-2m(s)},\\
+\nabla J_{n}\cdot\vec{n} & = & 0\\
+\nabla\cdot\vec{J}_{\mathcal{M}}(x) & = & \nabla_{\mathcal{M}}\cdot\vec{J}_{\mathcal{M}}(x)
+\end{eqnarray*}
+
+\end_inset
+
+eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:div_current"
+
+\end_inset
+
+ becomes.
+ 
+\begin_inset Formula 
+\begin{equation}
+\nabla\cdot\vec{J}(x)=\nabla_{\mathcal{M}}\cdot\vec{J}_{\mathcal{M}}(s(x))-2m(s)J_{n}(s(x))\label{eq:surf_vol}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\nabla_{\mathcal{M}}$
+\end_inset
+
+ is divergence operator defined on surface given by 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-1"
+
+\end_inset
+
+ 
+\begin_inset Formula 
+\[
+\nabla_{\mathcal{M}}=\nabla\cdot\Pi_{\nabla\Psi}
+\]
+
+\end_inset
+
+ where 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\Pi_{\nabla\Psi}$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ represents a projection operator defined as 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\Pi_{\nabla\Psi}=I-\nabla\Psi\nabla\Psi^{T}$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+.
+ In other words, the surface divergence of a vector function is defined
+ as first projecting the vector function on the tangent space of the surface
+ and then computing divergence.
+ Similarly, other operators such as surface curl can be defined by projecting
+ vectors to tangent space of surface 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-1"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Now, similar to the volume case, the surface tangential current can be decompose
+d using Helmholtz decomposition 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\vec{J}_{\mathcal{M}}(s)=\nabla\Phi_{1}(s)+\nabla\times(\Phi_{2}(s)\vec{n}(s))
+\]
+
+\end_inset
+
+ where 
+\begin_inset Formula $\Phi_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\Phi_{2}$
+\end_inset
+
+ are scalar functions defined on the surface (and extended to narrow band
+ through streamlines as above, i.e.
+ 
+\begin_inset Formula $\nabla\Phi\cdot\vec{n}=\nabla\times(\Phi_{2}\vec{n})=0$
+\end_inset
+
+) and therefore both the components of the decomposition lie in the tangent
+ space of the surface.
+ Therefore, .
+\end_layout
+
+\begin_layout Standard
+therefore,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\nabla\cdot\vec{J}(x)=\nabla_{\mathcal{M}}\cdot\nabla_{\mathcal{M}}\Phi_{1}(s(x))-2m(s(x))J_{n}(s(x))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Therefore, 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+V(r) & = & -\frac{1}{4\pi\sigma}\int_{R^{3}}\frac{\nabla\cdot J(x)}{|r-x|}dV(x)\\
+ & = & -\frac{1}{4\pi\sigma}\int\frac{\nabla\cdot J(x)}{|r-x|}\delta(\Psi(x))dX\\
+ & = & \boxed{-\frac{1}{4\pi\sigma}\int_{\mathcal{M}}\frac{\Delta_{\mathcal{M}}\Phi_{1}(s)-2m(s)J_{n}(s)}{|r-s|}dS}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where, 
+\begin_inset Formula $\Delta_{\mathcal{M}}$
+\end_inset
+
+ is Laplace-Beltrami operator.
+ Here we note that for the last step for converting to surface integral,
+ we used 
+\begin_inset Formula $|\Psi(x)|=1$
+\end_inset
+
+.
+ This gives relationship between potential at any given point for surface
+ constrained current in case of infinite homogeneous conducting medium.
+\end_layout
+
+\begin_layout Section*
+MEG
+\end_layout
+
+\begin_layout Standard
+From Sarvas paper 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-3"
+
+\end_inset
+
+ (eq 9):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+B(r) & = & \frac{\mu_{0}}{4\pi}\int\frac{\nabla\times J(r')}{|r-r'|}dV\\
+ & = & \frac{\mu_{0}}{4\pi}\int\frac{\nabla\times J(s)}{|r-s|}dS
+\end{eqnarray*}
+
+\end_inset
+
+Writing 
+\begin_inset Formula 
+\[
+\nabla\times J(x)=\nabla\times\vec{J}{}_{\mathcal{M}}+\nabla\times J_{n}(s)\vec{n}(s)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since 
+\begin_inset Formula $\nabla\times(J_{n}(s)\vec{n}(s))=\nabla J_{n}(s)\times\vec{n}(s)+J_{n}(s)\nabla\times\vec{n}(s)=\nabla J_{3}(s)\times\vec{n}(s)$
+\end_inset
+
+ because curl of surface normals is zero, and gradient of 
+\begin_inset Formula $J_{n}$
+\end_inset
+
+ along the surface normal is zero.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\nabla\times(\Phi_{2}(s)\vec{n}(s))=\nabla\Phi_{2}\times\vec{n}+\Phi_{2}\nabla\times\vec{n}=\nabla\Phi_{2}(s)\times\vec{n}(s)
+\]
+
+\end_inset
+
+Additionally, 
+\begin_inset Formula $\nabla\times\vec{J}_{\mathcal{M}}=\nabla\times(\nabla\Phi_{2}\times\vec{n})=(\nabla\cdot\vec{n}+\vec{n}\cdot\nabla)\nabla\Phi_{2}-[\nabla\cdot\nabla\Phi_{2}+\nabla\Phi_{2}\cdot\nabla]\vec{n}=-2m(s)\nabla\Phi_{2}-\Delta_{\mathcal{M}}\Phi_{2}\vec{n}=-2m(s)\nabla_{\mathcal{M}}\Phi_{2}-\Delta_{\mathcal{M}}\Phi_{2}\vec{n}$
+\end_inset
+
+ .
+ Note that we used 
+\begin_inset Formula $(\vec{n}\cdot\nabla)\nabla\Phi_{2}+\nabla\Phi_{2}\cdot\nabla\vec{n}=\nabla(\nabla\Phi_{2}\cdot\vec{n})=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Therefore,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\boxed{\vec{B}(r)=\frac{\mu_{0}}{4\pi}\int\frac{\nabla_{\mathcal{M}}J_{n}(s)\times\vec{n}(s)-2m(s)\nabla_{\mathcal{M}}\Phi_{2}(s)-\Delta_{\mathcal{M}}\Phi_{2}(s)\vec{n}(s)}{|r-s|}dS}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Helmholtz decomposition
+\end_layout
+
+\begin_layout Standard
+The Helmholtz decomposition for any vector field can be written as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+J=\nabla\Phi_{1}+\nabla\times\Phi_{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The two components 
+\begin_inset Formula $\nabla\Phi_{d}$
+\end_inset
+
+ and 
+\begin_inset Formula $\nabla\times\Phi_{c}$
+\end_inset
+
+ are orthogonal to each other .i.e.
+ 
+\begin_inset Formula 
+\[
+\int\nabla\Phi_{_{1}}\cdot\nabla\times\Phi_{2}dV=0.
+\]
+
+\end_inset
+
+ On general manifolds, Helmholtz decomposition generalizes to Hodge decompositio
+n of the differential forms.
+ One problem with generalizing this for a vector field on surfaces is that
+ curl is a 3D phenomenon.
+ One possible decomposition is 
+\begin_inset Formula $X=\nabla f+J\nabla g+\sum_{i=1}^{m}c_{i}Y_{i}$
+\end_inset
+
+ where 
+\begin_inset Formula $f,g$
+\end_inset
+
+ are functions, 
+\begin_inset Formula $J$
+\end_inset
+
+ is rotation by 
+\begin_inset Formula $\pi/2$
+\end_inset
+
+ in tangent plane (assuming the surface is orientable), the last summation
+ term contain curl free and divergence free vector fields.
+ On surfaces with spherical topology, there are no such vector fields (but
+ for example on torus there is one such field), so the last term disappears.
+ 
+\end_layout
+
+\begin_layout Standard
+The approach we chose is from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-2"
+
+\end_inset
+
+ and uses the decomposition 
+\begin_inset Formula 
+\[
+\vec{J}_{\mathcal{M}}(s)=\nabla\Phi_{1}(s)+\nabla\times(\Phi_{2}(s)\vec{n}(s)).
+\]
+
+\end_inset
+
+ The second term is 
+\begin_inset Formula $\nabla\times(\Phi_{2}(s)\vec{n}(s))=\nabla\Phi_{1}\times\vec{n}$
+\end_inset
+
+, i.e.
+ basically gradient field rotated by 
+\begin_inset Formula $\pi/2$
+\end_inset
+
+ along the surface.
+ Note that the gradient and curl operators are regular 3D operators in the
+ above decomposition, yet both the components lie in the tangent space of
+ the surface.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "levelset"
+key "key-1"
+
+\end_inset
+
+Shi Y, Thompson P, Dinov I, Osher S, Toga A, Direct Cortical Mapping via
+ Solving Partial Differential Equations on Implicit Surfaces, Med Image
+ Anal.
+ 2007 Jun; 11(3): 207–223.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "helmholtz"
+key "key-2"
+
+\end_inset
+
+Scharstein, Robert W.
+ "Helmholtz decomposition of surface electric current in electromagnetic
+ scattering problems." System Theory, 1991.
+ Proceedings., Twenty-Third Southeastern Symposium on.
+ IEEE, 1991.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "sarvas"
+key "key-3"
+
+\end_inset
+
+Sarvas J, Basic mathematical and electromagnetic concepts of the biomagnetic
+ inverse problem, Phys.
+ Med.
+ Biol., 1987, Vol.
+ 32, No 1, 11-22.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "chen"
+key "chen1"
+
+\end_inset
+
+Chen S, Merriman B, Osher S, Smereka P.
+ A simple level set method for solving Stefan problems.
+ Journal of Computational Physics.
+ 1997;135:8–29.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "sethian"
+key "sethian1"
+
+\end_inset
+
+Sethian J.
+ A fast marching level set method for monotonically advancing fronts.
+ Proc Nat Acad Sci.
+ 1996;93(4):1591–1595.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "fokas"
+key "key-fokas"
+
+\end_inset
+
+Fokas, A.
+ S.
+ "Electro–magneto-encephalography for a three-shell model: distributed current
+ in arbitrary, spherical and ellipsoidal geometries." Journal of The Royal
+ Society Interface 6.34 (2009): 479-488.
+\end_layout
+
+\end_body
+\end_document
