@@ -1,0 +1,177 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+||AUM||
+\end_layout
+
+\begin_layout Standard
+The mathematical statement of Divergence theorem is 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\int\int\int_{U}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The corollary that we will be using is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\int\int\int_{V}[F.(\nabla g)+g(\nabla\cdot F)]dV=\varoiint gF\cdot dS
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+i.e.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\int\int\int(\nabla\cdot F)gdV=-\int\int\int F\cdot(\nabla g)dV
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The governing equation from Sarvas (eq.
+ 7) is:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+V(r) & =-\frac{1}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{J}(r')}{|r-r'|}dV\\
+ & =-\frac{J}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}\delta_{S}(r')dV\\
+ & =\frac{J}{4\pi\sigma}\int_{V}\vec{n}\cdot\nabla(\frac{1}{|r-r'|}\delta_{S}(r'))dV\\
+ & =\frac{J}{4\pi\sigma}\int_{V}\vec{n}\cdot\left(\frac{r-r'}{|r-r'|^{3}}\delta_{S}(r')+\frac{1}{|r-r'|}\nabla\delta_{S}(r')\right)dV\\
+ & =\frac{J}{4\pi\sigma}\int_{S}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS+\int_{S}\nabla\cdot\left(\frac{\vec{n}}{|r-r'|}\right)dS
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Therefore, we have:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+-\frac{J}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS=\frac{J}{4\pi\sigma}\int_{S}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS+\frac{J}{4\pi\sigma}\int_{S}\nabla\cdot\left(\frac{\vec{n}}{|r-r'|}\right)dS
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that the last term is not zero.
+\end_layout
+
+\begin_layout Standard
+In summary, this is just a restatement of obvious expression:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{1}{4\pi\sigma}\int\nabla\cdot\left(\frac{\vec{J(r')}n(r')}{|r-r'|}\right)dS=\frac{1}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS+\frac{J}{4\pi\sigma}\int_{S}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
