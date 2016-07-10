@@ -96,7 +96,7 @@ The corollary that we will be using is
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\int\int\int_{V}[F.(\nabla g)+g(\nabla\cdot F)]dV=\varoiint gF\cdot dS
+\int_{V}[F.(\nabla g)+g(\nabla\cdot F)]dV=\int_{S}gF\cdot dS
 \]
 
 \end_inset
@@ -111,7 +111,7 @@ i.e.
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\int\int\int(\nabla\cdot F)gdV=-\int\int\int F\cdot(\nabla g)dV
+\int(\nabla\cdot F)gdV=-\int F\cdot(\nabla g)dV
 \]
 
 \end_inset
@@ -130,8 +130,8 @@ The governing equation from Sarvas (eq.
 V(r) & =-\frac{1}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{J}(r')}{|r-r'|}dV\\
  & =-\frac{J}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}\delta_{S}(r')dV\\
  & =\frac{J}{4\pi\sigma}\int_{V}\vec{n}\cdot\nabla(\frac{1}{|r-r'|}\delta_{S}(r'))dV\\
- & =\frac{J}{4\pi\sigma}\int_{V}\vec{n}\cdot\left(\frac{r-r'}{|r-r'|^{3}}\delta_{S}(r')+\frac{1}{|r-r'|}\nabla\delta_{S}(r')\right)dV\\
- & =\frac{J}{4\pi\sigma}\int_{S}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS+\int_{S}\nabla\cdot\left(\frac{\vec{n}}{|r-r'|}\right)dS
+ & =\frac{J}{4\pi\sigma}\int_{V}\vec{n}\cdot\left(-\frac{r-r'}{|r-r'|^{3}}\delta_{S}(r')+\frac{1}{|r-r'|}\nabla\delta_{S}(r')\right)dV\\
+ & =-\frac{J}{4\pi\sigma}\int_{S}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS+\int_{S}\nabla\cdot\left(\frac{\vec{n}}{|r-r'|}\right)dS
 \end{align*}
 
 \end_inset
@@ -146,7 +146,7 @@ Therefore, we have:
 \begin_layout Standard
 \begin_inset Formula 
 \[
--\frac{J}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS=\frac{J}{4\pi\sigma}\int_{S}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS+\frac{J}{4\pi\sigma}\int_{S}\nabla\cdot\left(\frac{\vec{n}}{|r-r'|}\right)dS
+-\frac{J}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS=-\frac{J}{4\pi\sigma}\int_{S}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS+\frac{J}{4\pi\sigma}\int_{S}\nabla\cdot\left(\frac{\vec{n}}{|r-r'|}\right)dS
 \]
 
 \end_inset
@@ -165,12 +165,18 @@ In summary, this is just a restatement of obvious expression:
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\frac{1}{4\pi\sigma}\int\nabla\cdot\left(\frac{\vec{J(r')}n(r')}{|r-r'|}\right)dS=\frac{1}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS+\frac{J}{4\pi\sigma}\int_{S}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS
+\frac{J}{4\pi\sigma}\int\nabla\cdot\left(\frac{\vec{n}(r')}{|r-r'|}\right)dS=\frac{J}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS+\frac{J}{4\pi\sigma}\int_{S}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS
 \]
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Noe that, even though the integration is over surface, the divergence here
+ is volumetric operator.
+ So divergence theorem does not make the LHS 0.
 \end_layout
 
 \end_body
