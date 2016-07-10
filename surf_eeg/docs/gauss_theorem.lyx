@@ -70,8 +70,8 @@
 
 \begin_body
 
-\begin_layout Standard
-||AUM||
+\begin_layout Title
+Surface-based EEG
 \end_layout
 
 \begin_layout Standard
@@ -174,9 +174,26 @@ In summary, this is just a restatement of obvious expression:
 \end_layout
 
 \begin_layout Standard
-Noe that, even though the integration is over surface, the divergence here
- is volumetric operator.
+Even though the integration is over surface, the divergence here is volumetric
+ operator.
  So divergence theorem does not make the LHS 0.
+ As a result, the two starting points: (1) 
+\begin_inset Formula $V(r)=\frac{1}{4\pi\sigma}\int\frac{\nabla\cdot J\vec{n}(r')}{|r-r'|}dS$
+\end_inset
+
+ and (2) 
+\begin_inset Formula $V(r)=\frac{1}{4\pi\sigma}\int J\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS$
+\end_inset
+
+ do not yield the same answer.
+ 
+\end_layout
+
+\begin_layout Standard
+In Sarvas et al, the starting equation (1) was simplified to eq.
+ (2) and then used for computing impulse response.
+ However, this simplification does not apply because of the delta function
+ as shown above.
 \end_layout
 
 \end_body
