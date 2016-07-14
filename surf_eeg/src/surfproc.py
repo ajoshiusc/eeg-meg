@@ -202,61 +202,76 @@ def add_normals(s1):
     s1.normals = vtk_to_numpy(p1.GetNormals())
     s1.vertices = vtk_to_numpy(n1.GetPoints().GetData())
     faces = vtk_to_numpy(n1.GetPolys().GetData())
-    faces = faces.reshape(len(faces)/4,4)
+    faces = faces.reshape(len(faces)/4, 4)
     s1.faces = faces[:, 1:]
 
     return s1
+
+
 def mean_curvature(s):
     curve1 = vtkCurvatures()
-    s=createPolyData(s.vertices, s.faces)
+    s = createPolyData(s.vertices, s.faces)
     curve1.SetInput(s)
     curve1.SetCurvatureTypeToMean()
     curve1.Update()
-    m=curve1.GetOutput()
-    m=vtk_to_numpy(m.GetPointData().GetScalars())
+    m = curve1.GetOutput()
+    m = vtk_to_numpy(m.GetPointData().GetScalars())
     return m
 
-def get_sphere(center= [0,0,0], radius= 5.0, res=100):
+
+def get_sphere(center=[0, 0, 0], radius=5.0, res=100):
     source = vtkSphereSource()
     source.SetCenter(center[0], center[1], center[2])
     source.SetRadius(radius)
     source.SetThetaResolution(res)
     source.SetPhiResolution(res)
     source.Update()
-    surf1= source.GetOutput()
+    surf1 = source.GetOutput()
     pts = surf1.GetPoints()
     vert1 = vtk_to_numpy(pts.GetData())
     faces1 = surf1.GetPolys()
     f1 = faces1.GetData()
     f2 = vtk_to_numpy(f1)
     f2 = f2.reshape(len(f2) / 4, 4)
+
     class surf:
         pass
     surf.faces = f2[:, 1:]
     surf.vertices = vert1
     return surf
 
-#
 
-def view_patch(r,attrib=[]):
-    mlab.figure()
-    if len(attrib)>0:
-        mlab.triangular_mesh(r.vertices[:, 0], r.vertices[:, 1], r.vertices[:, 2],
-                             r.faces, representation='surface', opacity=1, scalars=attrib)
+def view_patch(r, attrib=[], opacity=1, fig=0, show=1):
+
+    if fig == 0:
+        fig = mlab.figure()
     else:
-        mlab.triangular_mesh(r.vertices[:, 0], r.vertices[:, 1], r.vertices[:, 2],
-                             r.faces, representation='surface', opacity=1)
+        mlab.figure(fig)
+
+    if len(attrib) > 0:
+        mlab.triangular_mesh(r.vertices[:, 0], r.vertices[:, 1],
+                             r.vertices[:, 2], r.faces,
+                             representation='surface', opacity=opacity,
+                             scalars=attrib)
+    else:
+        mlab.triangular_mesh(r.vertices[:, 0], r.vertices[:, 1],
+                             r.vertices[:, 2],
+                             r.faces, representation='surface',
+                             opacity=opacity)
 
     mlab.gcf().scene.parallel_projection = True
     mlab.view(azimuth=0, elevation=90)
     mlab.colorbar(orientation='horizontal')
 
     mlab.draw()
-    mlab.show()
+    if show > 0:
+        mlab.show(stop=True)
+
+    return fig
 
 
 def readdfsVTK(fname):
-    s=readdfs(fname)
+    s = readdfs(fname)
     poly = createPolyData(s.vertices, s.faces)
     return poly
 

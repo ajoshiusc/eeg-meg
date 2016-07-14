@@ -12,8 +12,8 @@ brain_name = 'C:\\Users\\ajoshi\\Downloads\\C113AV_scan1\\\
 c7452AD_AV_ave.brain.dfs'
 skull_name = 'C:\\Users\\ajoshi\\Downloads\\C113AV_scan1\\\
 c7452AD_AV_ave.outer_skull.dfs'
-brain = get_sphere([0, 0, 0], radius=50.0, res=200)
-skull = get_sphere([0, 0, 0], radius=1200.0, res=50)
+brain = get_sphere([0, 0, 0], radius=.06000, res=150)
+skull = get_sphere([0, 0, 0], radius=.12000, res=50)
 
 # brain = readdfs(brain_name)
 # brain=smooth_patch(brain,100)
@@ -32,8 +32,9 @@ writedfs('skull.dfs', skull)
 print "# vertices in Brain: " + str(brain.vertices.shape[0])
 print "# vertices in Skull: " + str(skull.vertices.shape[0])
 m = mean_curvature(brain)
-m = smooth_surf_function(brain, m, 100, 100)
-view_patch(brain, attrib=m)
+# m = smooth_surf_function(brain, m, 10, 100)
+br = view_patch(brain, attrib=m, opacity=1, show=0)
+view_patch(skull, opacity=.1, fig=br, show=1)
 Tri = face_v_conn(brain)
 
 Q = 1.0+sp.zeros((brain.faces.shape[0], 1))
@@ -47,7 +48,7 @@ Q = 1.0+sp.zeros(brain.vertices.shape[0])
 area_v = (1.0/3.0)*Tri*br_face_area
 v = sp.zeros(skull.vertices.shape[0])  # eq 8 from Sarvas
 v_aaj = sp.zeros(skull.vertices.shape[0])  # joshi
-view_patch(brain, attrib=Q)
+view_patch(brain, attrib=Q, opacity=1)
 for i in range(skull.vertices.shape[0]):
     r0 = brain.vertices
     r_r0 = skull.vertices[i, ]-r0
@@ -67,5 +68,5 @@ for i in range(skull.vertices.shape[0]):
 
 # In[15]:
 
-view_patch(skull, attrib=v)
-view_patch(skull, attrib=v_aaj)
+view_patch(skull, attrib=v,show=1)
+#view_patch(skull, attrib=v_aaj,show=1)
