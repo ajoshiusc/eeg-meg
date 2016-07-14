@@ -1,0 +1,669 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass amsart
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Surface-Constrained EEG: when current is normal to the surface
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Our goal is to investigate if we can get a simplification of the forward
+ and inverse problems in case of surface based EEG as proposed by Dr.
+ Fokas.
+ Specifically, we will invesitigate the contribution of the normal component
+ of the current to the skull potential, and whether or not it simplifies
+ to zero.
+ Let 
+\begin_inset Formula $S$
+\end_inset
+
+ be skull surface and 
+\begin_inset Formula $B$
+\end_inset
+
+ be brain surface and 
+\begin_inset Formula $V$
+\end_inset
+
+ be skull volume.
+ We will consider a simpler case 
+\begin_inset Formula $J(r)=J\vec{n(r)}.$
+\end_inset
+
+ More general case 
+\begin_inset Formula $J(r)\vec{n(r)}$
+\end_inset
+
+ is very similar and is analysed in our previous notes.
+ We will be using the identity 
+\begin_inset Formula $\int f(x)\delta'(x)dx=-\int f'(x)\delta(x)dx=-f'(0)$
+\end_inset
+
+, or multivariate version of this identity.
+ The corollary of the divergence theorem that we will be using is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\int_{V}[F.(\nabla g)+g(\nabla\cdot F)]dV=\int_{S}gF\cdot dS
+\]
+
+\end_inset
+
+and when 
+\begin_inset Formula $F$
+\end_inset
+
+ is 
+\begin_inset Formula $0$
+\end_inset
+
+ on the skull surface 
+\begin_inset Formula $S$
+\end_inset
+
+, the RHS is 
+\begin_inset Formula $0$
+\end_inset
+
+.
+ i.e.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\int(\nabla\cdot F)gdV=-\int F\cdot(\nabla g)dV
+\]
+
+\end_inset
+
+We will analyze two models: 
+\end_layout
+
+\begin_layout Enumerate
+Model (1): The volume form with dirac measure on the surface: 
+\begin_inset Formula $dV'=\delta_{B}(r)dV$
+\end_inset
+
+, 
+\end_layout
+
+\begin_layout Enumerate
+Model (2): Usual volume form 
+\begin_inset Formula $dV$
+\end_inset
+
+ but current is dipole like with support on the surface: 
+\begin_inset Formula $J\vec{n}\delta_{S}(r)$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+In our case, (2) is probably more accurate model of what we are trying to
+ do.
+\end_layout
+
+\begin_layout Section
+Model (1) Dirac measure on volume form: 
+\begin_inset Formula $dV'=\delta_{B}(r)dV$
+\end_inset
+
+, 
+\end_layout
+
+\begin_layout Standard
+The relationship between current 
+\begin_inset Formula $J$
+\end_inset
+
+ and potential 
+\begin_inset Formula $V$
+\end_inset
+
+ for infinite homogeneous conductor from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sarvas1"
+
+\end_inset
+
+ (eq.
+ 7) is:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+V(r) & =-\frac{1}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{J}(r')}{|r-r'|}dV'\\
+ & =-\frac{J}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}\delta_{B}(r')dV\\
+ & =\frac{J}{4\pi\sigma}\int_{V}\vec{n}\cdot\nabla(\frac{1}{|r-r'|}\delta_{B}(r'))dV\\
+ & =\frac{J}{4\pi\sigma}\int_{V}\vec{n}\cdot\left(-\frac{r-r'}{|r-r'|^{3}}\delta_{B}(r')+\frac{1}{|r-r'|}\nabla\delta_{B}(r')\right)dV\\
+ & =-\frac{J}{4\pi\sigma}\int_{B}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS-\int_{B}\nabla\cdot\left(\frac{\vec{n}}{|r-r'|}\right)dS
+\end{align*}
+
+\end_inset
+
+Therefore, we have:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+-\frac{J}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS=-\frac{J}{4\pi\sigma}\int_{B}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS-\frac{J}{4\pi\sigma}\int_{B}\nabla\cdot\left(\frac{\vec{n}}{|r-r'|}\right)dS
+\]
+
+\end_inset
+
+Note that the last term is not zero.
+ In summary, this is just a restatement of obvious expression:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{J}{4\pi\sigma}\int_{B}\nabla\cdot\left(\frac{\vec{n}(r')}{|r-r'|}\right)dS=\frac{J}{4\pi\sigma}\int_{B}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS-\frac{J}{4\pi\sigma}\int_{B}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS
+\]
+
+\end_inset
+
+This is the usual product rule applied to integrand.
+ Even though the integration is over surface, the divergence here is volumetric
+ operator.
+ So divergence theorem does not make the LHS 0 (more in Sec.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Divergene-therem-for"
+
+\end_inset
+
+.
+ As a result, the two starting points: (1) 
+\begin_inset Formula $V(r)=\frac{1}{4\pi\sigma}\int\frac{\nabla\cdot J\vec{n}(r')}{|r-r'|}dS$
+\end_inset
+
+ and (2) 
+\begin_inset Formula $V(r)=\frac{1}{4\pi\sigma}\int J\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS$
+\end_inset
+
+ do not yield the same answer.
+ Note that LHS would be 
+\begin_inset Formula $0$
+\end_inset
+
+ if integration was over skull volume 
+\begin_inset Formula $V$
+\end_inset
+
+, or the divergence operator was surface divergence (Sec.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Divergene-therem-for"
+
+\end_inset
+
+).
+ In Sarvas et al 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "key-fokas,sarvas1"
+
+\end_inset
+
+, the starting equation 
+\begin_inset Formula $-\frac{1}{4\pi\sigma}\int_{V}\frac{\nabla\cdot\vec{J}(r')}{|r-r'|}dV$
+\end_inset
+
+ was simplified to 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $-\frac{J}{4\pi\sigma}\int_{V}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dV$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ using the divergence theorem and then used for computing impulse response.
+ However, this simplification does not apply for surface constrained case
+ because of the delta function as shown above.
+\end_layout
+
+\begin_layout Section
+Model (2) Dipole like current: 
+\begin_inset Formula $J\vec{n}(r)\delta_{S}(r)$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Another slightly different viewpoint is the current is 
+\begin_inset Formula $J\vec{n}(x)\delta_{S}(x)$
+\end_inset
+
+.
+ In this viewpoint, there is dipole like current on a set of measure 0 (the
+ surface).
+ In this case,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+V(r) & =-\frac{J}{4\pi\sigma}\int_{V}\frac{\nabla\cdot(\vec{n(x)\delta_{S}(x)})}{|r-r'|}dV\\
+ & =-\frac{J}{4\pi\sigma}\int_{V}\frac{(\nabla\cdot\vec{\vec{n}(x))\delta_{S}(x)}+\vec{n}(x)\cdot\nabla\delta(x)}{|r-r'|}dV\\
+ & =-\frac{J}{4\pi\sigma}\int_{V}\frac{m(s)\delta_{S}(x)}{|r-r'|}-\frac{m(s)\delta(x)}{|r-r'|}-\delta_{S}(x)\vec{n}(x)\cdot\frac{r-r'}{|r-r'|^{3}}dV\\
+ & =\frac{J}{4\pi\sigma}\int_{B}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS
+\end{align*}
+
+\end_inset
+
+ Therefore 
+\begin_inset Formula 
+\begin{align}
+V(r) & =\frac{J}{4\pi\sigma}\int_{B}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS\label{eq:main_eq2-1}\\
+ & =\frac{J}{4\pi\sigma}\int_{B}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS-\frac{J}{4\pi\sigma}\int_{B}\nabla\cdot\left(\frac{\vec{n}(r')}{|r-r'|}\right)dS\label{eq:main_eq2_2}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and again, it is hard to see more simplification to 
+\begin_inset Formula $0$
+\end_inset
+
+, especially since there is no constrain on the topology (orientation, genus,
+ boundary, etc.) of the surface.
+ The two terms are not equal.
+ 
+\end_layout
+
+\begin_layout Standard
+If we want to use the divergence theorem by considering a narrow band aroud
+ 
+\begin_inset Formula $B$
+\end_inset
+
+ then we will have to consider the delta function and we cannot say that
+ the integration is 0.
+\end_layout
+
+\begin_layout Section
+Divergene therem for vector function on surface 
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Divergene-therem-for"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+According to Weatherburn 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "weatherburn"
+
+\end_inset
+
+ (p 240, eq.
+ 25), the surface divergence is given by:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+div_{S}F=Lt\frac{\int_{o}F\cdot tds}{dS}-m\vec{n}\cdot F
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $m$
+\end_inset
+
+ is mean curvature, 
+\begin_inset Formula $t$
+\end_inset
+
+ is tangent to closed curve 
+\begin_inset Formula $o$
+\end_inset
+
+.
+ Divergence theorem for a closed surface is: 
+\begin_inset Formula 
+\[
+\int div_{S}FdS=-\int mF\cdot\vec{n}dS
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $m$
+\end_inset
+
+ is the mean curvature.
+ This would yield 
+\begin_inset Formula $\frac{J}{4\pi\sigma}\int_{B}div_{S}\left(\frac{\vec{n}(r')}{|r-r'|}\right)dS=\frac{J}{4\pi\sigma}\int_{B}\frac{div_{S}\vec{n}(r')}{|r-r'|}dS$
+\end_inset
+
+ and therefore, 
+\begin_inset Formula $V(r)=0$
+\end_inset
+
+ , but..
+\end_layout
+
+\begin_layout Standard
+However, the proof of this theorem assumes a particular definition of divergence
+ with a property that (eq 6 p 226)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+div_{S}\left(f(x)\vec{n}(x)\right)=f(x)div_{S}\vec{n}(x)
+\]
+
+\end_inset
+
+ This is not true for 
+\begin_inset Formula $\nabla\cdot$
+\end_inset
+
+, the 3D divergence.
+ This is because the divergence on a surface is defined in a specific way
+ ($113, page 225 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "weatherburn"
+
+\end_inset
+
+) so that it is intrinsic.
+ ie.
+ it only depends on the values of 
+\begin_inset Formula $f(x)$
+\end_inset
+
+ on the surface and does not care how 
+\begin_inset Formula $f(x)$
+\end_inset
+
+ is outside the surface.
+ Therefore, 
+\begin_inset Formula $\nabla f(x)\cdot\vec{n}$
+\end_inset
+
+ does not play a role in 
+\begin_inset Formula $div_{s}$
+\end_inset
+
+.
+ If we assume this definition, with 
+\begin_inset Formula $f(x)=\frac{1}{|r-r'|}$
+\end_inset
+
+ then almost trivially, we get 
+\begin_inset Formula $V(r)=0$
+\end_inset
+
+ in eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:main_eq2-1"
+
+\end_inset
+
+.
+ Divergence defined on the surface is designed to null out normal part of
+ 
+\begin_inset Formula $\nabla f(x)$
+\end_inset
+
+ by definition.
+ This definition yields 
+\begin_inset Formula $\frac{J}{4\pi\sigma}\int_{B}div_{S}\left(\frac{\vec{n}(r')}{|r-r'|}\right)dS=\frac{J}{4\pi\sigma}\int_{B}\frac{div_{S}\vec{n}(r')}{|r-r'|}dS$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+But integrating the scalar divergence in 
+\begin_inset Formula $R^{3}$
+\end_inset
+
+, 
+\begin_inset Formula $\nabla\cdot$
+\end_inset
+
+ with respect to differential area is not equivalent to the surface divergence
+ 
+\begin_inset Formula $div_{S}$
+\end_inset
+
+.
+ Therefore, it is not clear if 
+\emph default
+
+\begin_inset Formula $\frac{J}{4\pi\sigma}\int_{B}\frac{\nabla\cdot\vec{n}(r')}{|r-r'|}dS$
+\end_inset
+
+ is equal to 
+\begin_inset Formula $\frac{J}{4\pi\sigma}\int_{B}\nabla\cdot\left(\frac{\vec{n}(r')}{|r-r'|}\right)dS$
+\end_inset
+
+ and therefore it is not clear if 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:main_eq2_2"
+
+\end_inset
+
+ vanishes.
+
+\emph on
+ 
+\end_layout
+
+\begin_layout Standard
+Moreover we know that 
+\begin_inset Formula $\int_{B}\vec{n}\cdot mdS=0$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "weatherburn"
+
+\end_inset
+
+, so, is 
+\begin_inset Formula $\int_{B}\vec{n}\cdot\frac{r-r'}{|r-r'|^{3}}dS$
+\end_inset
+
+ zero as well? 
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+The divergence theorem is applicable to 
+\begin_inset Formula $div_{s}$
+\end_inset
+
+(surface divergence) which is intrinsic and cannot be applied to 
+\begin_inset Formula $\nabla\cdot$
+\end_inset
+
+ regular divergence which is not intrinsic to the surface.
+ It is not clear if the contribution of normal component of the current
+ simplifies or becomes zero.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "sarvas"
+key "sarvas1"
+
+\end_inset
+
+Sarvas J, Basic mathematical and electromagnetic concepts of the biomagnetic
+ inverse problem, Phys.
+ Med.
+ Biol., 1987, Vol.
+ 32, No 1, 11-22.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "fokas"
+key "key-fokas"
+
+\end_inset
+
+Fokas, A.
+ S.
+ "Electro–magneto-encephalography for a three-shell model: distributed current
+ in arbitrary, spherical and ellipsoidal geometries." Journal of The Royal
+ Society Interface 6.34 (2009): 479-488.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "weatherburn"
+key "weatherburn"
+
+\end_inset
+
+ Weatherburn C.
+ E., 
+\begin_inset Quotes eld
+\end_inset
+
+Differential Geometry of Three Dimensions Vol 1
+\begin_inset Quotes erd
+\end_inset
+
+, Cambridge at University Press, 1955.
+\end_layout
+
+\end_body
+\end_document
